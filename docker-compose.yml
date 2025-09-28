@@ -1,0 +1,24 @@
+services:
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+
+  postgres:
+    image: 'postgres:15'
+    environment:
+      - 'POSTGRES_DB=mydatabase'
+      - 'POSTGRES_PASSWORD=20010831A'
+      - 'POSTGRES_USER=mousandour01'
+    ports:
+      - 5433:5432
+    networks:
+      - my-network
+
+
+networks:
+  my-network:
+    driver: bridge
