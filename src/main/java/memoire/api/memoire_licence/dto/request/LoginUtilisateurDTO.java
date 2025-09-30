@@ -1,17 +1,21 @@
-package memoire.api.memoire_licence.dto;
+package memoire.api.memoire_licence.dto.request;
 
-public class LoginDTO {
+import jakarta.validation.constraints.NotNull;
 
+public class LoginUtilisateurDTO {
+
+    @NotNull
     private String email;
 
+    @NotNull
     private String mot_de_passe;
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String emai) {
-        this.email = emai;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getMot_de_passe() {

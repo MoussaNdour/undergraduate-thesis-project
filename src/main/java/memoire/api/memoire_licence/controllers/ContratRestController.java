@@ -7,7 +7,7 @@ package memoire.api.memoire_licence.controllers;
 import java.util.List;
 
 import memoire.api.memoire_licence.services.ContratService;
-import memoire.api.memoire_licence.dto.ContratDTO;
+import memoire.api.memoire_licence.dto.response.ContratDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

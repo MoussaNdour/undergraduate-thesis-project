@@ -30,6 +30,8 @@ public interface UtilisateurRepository extends CrudRepository<Utilisateur, Integ
 
     Optional<Utilisateur> findByEmail(String email);
 
+    void deleteByEmail(String email);
+
 	// Insert specific finders here 
 
 	//List<Utilisateur> findByXxx(String xxx);

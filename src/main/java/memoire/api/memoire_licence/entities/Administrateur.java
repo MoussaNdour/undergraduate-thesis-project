@@ -25,8 +25,6 @@ public class Administrateur implements Serializable {
     @Column(name="idadmin", nullable=false)
     private int        idadmin ;
 
-//    @Column(name="idutilisateur", nullable=false)
-//    private int        idutilisateur ;
 
     //--- OTHER DATA FIELDS 
     @Column(name="codedaccess")
@@ -62,9 +60,13 @@ public class Administrateur implements Serializable {
 
     public Utilisateur getUtilisateur() {
         return this.utilisateur;
-    } 
+    }
 
-	@Override
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    @Override
 	public String toString() { 
 		String separator = "|";
 		StringBuilder sb = new StringBuilder();

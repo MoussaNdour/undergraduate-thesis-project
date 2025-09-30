@@ -26,19 +26,13 @@ public class Client implements Serializable {
     private int        idclient ;
 
 
-//    @Column(name="idutilisateur", nullable=false)
-//    private int        idutilisateur ;
-
-//    @Column(name="idlocal")
-//    private int idlocalisation;
-
     @OneToOne
     @JoinColumn(name = "idutilisateur", referencedColumnName = "idutilisateur")
     private Utilisateur utilisateur;
 
-    @OneToOne
-    @JoinColumn(name = "idlocal", nullable = false)
-    private Localisation localisation;
+//    @OneToOne
+//    @JoinColumn(name = "idlocal", nullable = false)
+//    private Localisation localisation;
 
     /**
      * Constructor
@@ -46,10 +40,14 @@ public class Client implements Serializable {
     public Client() {
 		super();
     }
-    
+
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
 
 
-    public void setIdclient( int idclient ) {
+
+    public void setIdclient(int idclient ) {
         this.idclient = idclient ;
     }
     public int getIdclient() {

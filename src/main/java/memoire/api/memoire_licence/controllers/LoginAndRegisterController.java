@@ -1,13 +1,15 @@
 package memoire.api.memoire_licence.controllers;
 
 
-import memoire.api.memoire_licence.dto.LoginDTO;
-import memoire.api.memoire_licence.dto.request.RegisterUserDTO;
-import memoire.api.memoire_licence.entities.Administrateur;
-import memoire.api.memoire_licence.entities.Client;
-import memoire.api.memoire_licence.entities.Prestataire;
+
+import memoire.api.memoire_licence.dto.request.LoginUtilisateurDTO;
+import memoire.api.memoire_licence.dto.request.RegisterUtilisateurDTO;
+import memoire.api.memoire_licence.dto.response.AdministrateurDTO;
+import memoire.api.memoire_licence.dto.response.ClientDTO;
+import memoire.api.memoire_licence.dto.response.PrestataireDTO;
 import memoire.api.memoire_licence.entities.Utilisateur;
-import memoire.api.memoire_licence.services.LoginAndRegistrationService;
+import memoire.api.memoire_licence.services.interfaces.LoginInterface;
+import memoire.api.memoire_licence.services.interfaces.RegistrationInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,82 +22,45 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginAndRegisterController {
 
     @Autowired
-    LoginAndRegistrationService service;
+    LoginInterface loginservice;
+
+    @Autowired
+    RegistrationInterface registrationservice;
 
     @PostMapping("/register/client")
-    public ResponseEntity<String> registerClient(RegisterUserDTO registerUserDTO){
-        Utilisateur utilisateur=new Utilisateur();
-        utilisateur.setPrenom(registerUserDTO.getPrenom());
-        utilisateur.setNom(registerUserDTO.getNom());
-        utilisateur.setTelephone(registerUserDTO.getTelephone());
-        utilisateur.setMotdepasse(registerUserDTO.getMot_de_passe());
-        utilisateur.setEmail(registerUserDTO.getEmail());
-        utilisateur.setAdresse(registerUserDTO.getAdresse());
-        utilisateur.setRole("CLIENT");
+    public ResponseEntity<?> registerClient(RegisterUtilisateurDTO registerUser){
 
-        Utilisateur utilisateursaved=service.save(utilisateur);
+        ClientDTO client=registrationservice.registerClient(registerUser);
 
-        Client client=new Client();
-
-
-
-        return ResponseEntity.ok("Le client est bien enregistrer dans la base de donnees");
+        return ResponseEntity.ok(client);
     }
 
     @PostMapping("/register/admin")
-    public ResponseEntity<String> registerAdmin(RegisterUserDTO registerUserDTO){
-        Utilisateur utilisateur=new Utilisateur();
-        utilisateur.setPrenom(registerUserDTO.getPrenom());
-        utilisateur.setNom(registerUserDTO.getNom());
-        utilisateur.setTelephone(registerUserDTO.getTelephone());
-        utilisateur.setMotdepasse(registerUserDTO.getMot_de_passe());
-        utilisateur.setEmail(registerUserDTO.getEmail());
-        utilisateur.setAdresse(registerUserDTO.getAdresse());
-        utilisateur.setRole("ADMIN");
+    public ResponseEntity<?> registerAdmin(RegisterUtilisateurDTO registerUser){
 
-        Utilisateur utilisateursaved=service.save(utilisateur);
+        AdministrateurDTO admin =registrationservice.registerAdmin(registerUser);
 
-        Administrateur admin=new Administrateur();
-
-
-        service.saveAdmin(admin);
-
-        return ResponseEntity.ok("L'admin a bien ete ajouter est bien enregistrer dans la base de donnees");
+        return ResponseEntity.ok(admin);
 
     }
 
     @PostMapping("/register/prestataire")
-    public ResponseEntity<String> registerPrestataire(RegisterUserDTO registerUserDTO){
-        Utilisateur utilisateur=new Utilisateur();
-        utilisateur.setPrenom(registerUserDTO.getPrenom());
-        utilisateur.setNom(registerUserDTO.getNom());
-        utilisateur.setTelephone(registerUserDTO.getTelephone());
-        utilisateur.setMotdepasse(registerUserDTO.getMot_de_passe());
-        utilisateur.setEmail(registerUserDTO.getEmail());
-        utilisateur.setAdresse(registerUserDTO.getAdresse());
-        utilisateur.setRole("PRESTATAIRE");
+    public ResponseEntity<?> registerPrestataire(RegisterUtilisateurDTO registerUser){
 
-        Utilisateur utilisateursaved=service.save(utilisateur);
+        PrestataireDTO prestataire=registrationservice.registerPrestataie(registerUser);
 
-        Prestataire prestataire=new Prestataire();
-
-
-
-        return ResponseEntity.ok("Le client est bien enregistrer dans la base de donnees");
-
+        return ResponseEntity.ok(prestataire);
     }
 
 
-
-    public ResponseEntity<?> Login(LoginDTO loginDTO){
-        Utilisateur utilisateur=service.getUser(loginDTO);
-
-        if(utilisateur!=null){
-            return ResponseEntity.ok(utilisateur);
-        }
-        else{
+    @PostMapping("/login")
+    public ResponseEntity<?> Login(LoginUtilisateurDTO user){
+        Utilisateur utilisateur=loginservice.getUser(user);
+        if (utilisateur==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Le nom d'utilisateur ou le mot de passe est incorrecte");
         }
+
+        return ResponseEntity.ok("ok, you are connected");
     }
 
 }

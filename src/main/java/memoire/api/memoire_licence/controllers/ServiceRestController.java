@@ -6,7 +6,7 @@ package memoire.api.memoire_licence.controllers;
 
 import java.util.List;
 
-import memoire.api.memoire_licence.dto.ServiceDTO;
+import memoire.api.memoire_licence.dto.response.ServiceDTO;
 import memoire.api.memoire_licence.services.ServiceForServiceEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,7 +6,7 @@ package memoire.api.memoire_licence.controllers;
 
 import java.util.List;
 
-import memoire.api.memoire_licence.dto.UtilisateurDTO;
+import memoire.api.memoire_licence.dto.response.UtilisateurDTO;
 import memoire.api.memoire_licence.services.UtilisateurService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,7 +32,7 @@ public class UtilisateurRestController {
 	private static final Logger logger = LoggerFactory.getLogger(UtilisateurRestController.class);
 
 	@Autowired
-	private UtilisateurService service ; // injected
+	private UtilisateurService service ;
 	
 
 	/**
@@ -51,13 +50,13 @@ public class UtilisateurRestController {
     /**
      * Get ONE identified by the given PK
 	 *
-	 * @param idutilisateur
+	 * @param email
      * @return 200 or 404 
      */
-    @GetMapping("/{idutilisateur}")
-    protected ResponseEntity<UtilisateurDTO> findById(@PathVariable int idutilisateur) {
+    @GetMapping("/{email}")
+    protected ResponseEntity<UtilisateurDTO> findByEmail(@PathVariable String email) {
     	logger.debug("REST : GET - findById");
-    	UtilisateurDTO utilisateurDTO = service.findById(idutilisateur);
+    	UtilisateurDTO utilisateurDTO = service.findByEmail(email);
 		if ( utilisateurDTO != null ) {
 			return ResponseEntity.ok(utilisateurDTO); // 200 OK, found
 		}
@@ -74,75 +73,42 @@ public class UtilisateurRestController {
 	 * @return 201 created or 409 conflict
 	 */
 	@PostMapping("")
-	protected ResponseEntity<Void> create(@RequestBody UtilisateurDTO utilisateurDTO) {
+	protected ResponseEntity<?> create(@RequestBody UtilisateurDTO utilisateurDTO) {
     	logger.debug("REST : POST - create");
 		if ( service.create(utilisateurDTO) ) {
 			return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 created
 		}
 		else {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409 Conflict
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Cet email est deja lie a un compte"); // 409 Conflict
 		}
 	}
 
 	/**
 	 * Update or create
 	 *
-	 * @param idutilisateur
+	 * @param email
 	 * @param utilisateurDTO
 	 * @return 200 updated or created
 	 */
-	@PutMapping("/{idutilisateur}")
-	protected ResponseEntity<Void> save(@PathVariable int idutilisateur, @RequestBody UtilisateurDTO utilisateurDTO) {
+	@PutMapping("/{email}")
+	protected ResponseEntity<Void> update(@PathVariable String email, @RequestBody UtilisateurDTO utilisateurDTO) {
     	logger.debug("REST : PUT - save");
-		service.save(idutilisateur, utilisateurDTO);
+		service.update(email, utilisateurDTO);
 		return ResponseEntity.ok().build(); // OK, updated or created
 	}
 
-	/**
- 	 * Update if exists 
-	 *
-	 * @param utilisateurDTO
-	 * @return 200 updated or 404 not found
-	 */
-	@PutMapping("")
-	protected ResponseEntity<Void> update(@RequestBody UtilisateurDTO utilisateurDTO) {
-    	logger.debug("REST : PUT - update");
-		if ( service.update(utilisateurDTO) ) {
-			return ResponseEntity.ok().build(); // 200 OK, found and updated
-		}
-		else {
-			return ResponseEntity.notFound().build(); // 404 Not found = "not updated"
-		}
-	}
 
-	/**
- 	 * Partial update for the given PK (if it exists )
-	 *
-	 * @param idutilisateur
-	 * @param utilisateurDTO
-	 * @return 200 updated or 404 not found
-	 */
-	@PatchMapping("/{idutilisateur}")
-	protected ResponseEntity<Void> partialUpdate(@PathVariable int idutilisateur, @RequestBody UtilisateurDTO utilisateurDTO) {
-    	logger.debug("REST : PATCH - partialUpdate");
-    	if ( service.partialUpdate(idutilisateur, utilisateurDTO) ) {
-    		return ResponseEntity.ok().build(); // OK, found and updated
-    	}
-    	else {
-			return ResponseEntity.notFound().build(); // 404 Not found = "not updated"
-    	}
-	}
 
 	/**
 	 * Delete by PK 
 	 *
-	 * @param idutilisateur
+	 * @param email
 	 * @return 204 deleted or 404 not found
 	 */
-	@DeleteMapping("/{idutilisateur}")
-	protected ResponseEntity<Void> deleteById(@PathVariable int idutilisateur) {
+	@DeleteMapping("/{email}")
+	protected ResponseEntity<Void> deleteById(@PathVariable String email) {
     	logger.debug("REST : DELETE - deleteById");
-		if ( service.deleteById(idutilisateur) ) {
+		if ( service.deleteById(email) ) {
 			return ResponseEntity.noContent().build(); // 204 No content = "deleted"
 		}
 		else {

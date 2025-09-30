@@ -1,6 +1,6 @@
 package memoire.api.memoire_licence.services;
 
-import memoire.api.memoire_licence.dto.ServiceDTO;
+import memoire.api.memoire_licence.dto.response.ServiceDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

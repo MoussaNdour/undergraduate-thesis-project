@@ -37,9 +37,7 @@ public class Prestataire implements Serializable {
     @JoinColumn(name="idutilisateur", referencedColumnName="idutilisateur")
     private Utilisateur utilisateur ;
 
-    @OneToOne
-    @JoinColumn(name = "idlocal", nullable = false)
-    private Localisation localisation;
+
 
     /**
      * Constructor
@@ -76,9 +74,15 @@ public class Prestataire implements Serializable {
 
     public Utilisateur getUtilisateur() {
         return this.utilisateur;
-    } 
+    }
 
-	@Override
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+
+
+    @Override
 	public String toString() { 
 		String separator = "|";
 		StringBuilder sb = new StringBuilder();
